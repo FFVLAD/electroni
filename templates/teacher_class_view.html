@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(45deg, #ff7e5f, #feb47b, #6a11cb, #2575fc);
+        background-size: 400% 400%;
+        animation: gradient 10s ease infinite;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .dashboard-title {
+        background-color: white;
+        color: black;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-outline-light {
+        background-color: white;
+        color: #ff7e5f;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-weight: bold;
+        transition: background-color 0.3s, transform 0.3s ease;
+    }
+
+    .btn-outline-light:hover {
+        background-color: #ff7e5f;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    .table th, .table td {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .table th {
+        background-color: #ff7e5f;
+        color: white;
+        font-weight: bold;
+    }
+
+    .table td {
+        background-color: white;
+        color: #333;
+        border-radius: 8px;
+    }
+
+    .btn-primary {
+        background-color: #feb47b;
+        border-color: #feb47b;
+        color: white;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-weight: bold;
+        transition: background-color 0.3s, transform 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #ff7e5f;
+        border-color: #ff7e5f;
+        transform: scale(1.05);
+    }
+
+    .alert {
+        border-radius: 10px;
+        font-size: 1.1rem;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="dashboard-title">Перегляд класу: {{ classroom.name }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Учні класу</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ім'я</th>
+                        <th>Призвище</th>
+                        <th>Оцінка</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ student.first_name }}</td>
+                            <td>{{ student.last_name }}</td>
+                            <td>
+                                <form method="POST" action="{% url 'set_grade' student.id %}">
+                                    {% csrf_token %}
+                                    <select name="subject" class="form-control">
+                                        {% for subject in classroom.teacher.subjects.all %}
+                                            <option value="{{ subject.id }}">{{ subject.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <input type="number" name="grade" min="1" max="12" class="form-control" placeholder="Оцінка">
+                                    <button type="submit" class="btn btn-primary">Встановити оцінку</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">Учнів у цьому класі немає.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Деталі оцінки</h2>
+    <p><strong>Учень:</strong> {{ grade.student.first_name }} {{ grade.student.last_name }}</p>
+    <p><strong>Вчитель:</strong> {{ grade.teacher.user.first_name }} {{ grade.teacher.user.last_name }}</p>
+    <p><strong>Предмет:</strong> {{ grade.subject.name }}</p>
+    <p><strong>Оцінка:</strong> {{ grade.grade }}</p>
+    <p><strong>Час:</strong> {{ grade.timestamp }}</p>
+</div>
+{% endblock %}

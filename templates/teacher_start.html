@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="container text-center py-5">
+        <h1 class="display-4">Вітаємо, {{ user.first_name }}!</h1>
+        <p class="lead">Ви перебуваєте в розділі вчителя. Перейдіть до панелі керування, щоб розпочати роботу з класами та оцінками.</p>
+        <a href="{% url 'teacher_dashboard' %}" class="btn btn-primary btn-lg">Розпочати</a>
+    </div>
+</section>
+
+<section class="info-section py-5 bg-light">
+    <div class="container">
+        <h3 class="text-center mb-4">Що ви можете робити?</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <h5 class="card-title">Керування класами</h5>
+                    <p class="card-text">Додавайте нові класи та керуйте поточними.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <h5 class="card-title">Оцінювання</h5>
+                    <p class="card-text">Виставляйте оцінки студентам у кілька кліків.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <h5 class="card-title">Звіти</h5>
+                    <p class="card-text">Генеруйте детальні звіти про успішність студентів.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

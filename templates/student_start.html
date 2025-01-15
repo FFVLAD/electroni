@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="container text-center py-5">
+        <h1 class="display-4">Привіт, {{ user.first_name }}!</h1>
+        <p class="lead">Переглядайте свої оцінки, слідкуйте за своїм прогресом і залишайтеся на зв’язку з викладачами.</p>
+    <a href="{% url 'class_view' grade=grade %}" class="btn btn-success btn-lg">Розпочати</a>
+
+
+    </div>
+</section>
+
+<section class="info-section py-5 bg-light">
+    <div class="container">
+        <h3 class="text-center mb-4">Що ви можете робити?</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <h5 class="card-title">Перегляд оцінок</h5>
+                    <p class="card-text">Отримуйте доступ до своїх оцінок у реальному часі.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <h5 class="card-title">Календар занять</h5>
+                    <p class="card-text">Перевіряйте свій розклад на тиждень або місяць.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <h5 class="card-title">Зв'язок із вчителями</h5>
+                    <p class="card-text">Отримуйте відгуки від викладачів і ставте запитання.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

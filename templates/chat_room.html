@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+<style>
+.chat-container {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    height: 80vh;
+    padding: 15px;
+    border-radius: 15px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.message {
+    margin-bottom: 15px;
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 1rem;
+    word-wrap: break-word;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.message-sent {
+    background-color: #fff;
+    color: #333;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.message-received {
+    background-color: #6a11cb;
+    color: #fff;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.input-container input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.input-container button {
+    background-color: #ff7e5f;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.input-container button:hover {
+    transform: scale(1.1);
+}
+</style>
+
+{% block content %}
+<div class="container">
+    <h2>Чат з {{ recipient.first_name }} {{ recipient.last_name }}</h2>
+    <div class="chat-box">
+        {% for message in messages %}
+            <p><strong>{{ message.sender.first_name }}:</strong> {{ message.content }} <small>{{ message.timestamp }}</small></p>
+        {% endfor %}
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="content" class="form-control" placeholder="Напишіть повідомлення"></textarea>
+        <button type="submit" class="btn btn-primary mt-2">Відправити</button>
+    </form>
+</div>
+{% endblock %}

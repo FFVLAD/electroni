@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AntiSchool - Навчальна Платформа{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+
+        body {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Переливний фон */
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+            margin-top: 50px;
+            background-color: transparent;
+        }
+
+        .hero-content {
+            background-color: white;
+            color: #333;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 30px;
+        }
+
+        .btn-custom {
+            background-color: #fff;
+            color: #ff7e5f;
+            border-radius: 20px;
+            padding: 12px 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #ff7e5f;
+            color: #fff;
+        }
+
+
+        .features {
+            background-color: #f9f9f9;
+            padding: 50px 0;
+        }
+
+        .features-content {
+            background-color: white;
+            color: #333;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .features h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .feature-card {
+            background: #fff;
+            color: #333;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ff7e5f;
+        }
+
+        .feature-card .card-text {
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* Адаптивність */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .features-content {
+                padding: 30px;
+            }
+
+            .features h2 {
+                font-size: 2rem;
+            }
+
+            .feature-card {
+                padding: 20px;
+            }
+
+            .btn-custom {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="bg-dark text-white p-3">
+        <div class="container d-flex justify-content-between">
+            <h1 class="h3">AntiSchool</h1>
+<nav>
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" class="btn btn-outline-light">Вийти</a>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-light">Увійти</a>
+    {% endif %}
+</nav>
+
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

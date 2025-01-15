@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="container text-center">
+        <div class="hero-content">
+            <h1 class="display-3">Вітаємо у AntiSchool</h1>
+            <p class="lead">Сучасна платформа для перегляду оцінок без стресу.</p>
+            <a href="{% url 'login' %}" class="btn btn-custom">Увійти</a>
+        </div>
+    </div>
+</section>
+<section class="features py-5">
+    <div class="container text-center">
+        <div class="features-content">
+            <h2 class="mb-4">Наші можливості</h2>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card p-4 shadow-lg feature-card">
+                        <h5 class="card-title">Оцінки онлайн</h5>
+                        <p class="card-text">Зручна система для перегляду результатів навчання.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-4 shadow-lg feature-card">
+                        <h5 class="card-title">Гнучкий інтерфейс</h5>
+                        <p class="card-text">Оптимізовано для вчителів, студентів та адміністраторів.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-4 shadow-lg feature-card">
+                        <h5 class="card-title">Динамічні графіки</h5>
+                        <p class="card-text">Відстежуйте прогрес навчання за допомогою візуалізацій.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

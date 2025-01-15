@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+<style>
+.chat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chat-card {
+    background-color: #fff;
+    color: #333;
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.chat-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.chat-card h5 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.chat-card button {
+    background-color: #6a11cb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.chat-card button:hover {
+    background-color: #ff7e5f;
+}
+</style>
+
+{% block content %}
+<div class="container">
+    <h2>Список вчителів</h2>
+    <ul>
+        {% for teacher in teachers %}
+            <li><a href="{% url 'chat_with_user' teacher.id %}">{{ teacher.first_name }} {{ teacher.last_name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

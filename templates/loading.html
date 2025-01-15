@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завантаження...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            width: 300px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background-color: orange;
+            transition: width 5s linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Вхід в кабінет</h1>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    </div>
+    <script>
+        // Плавне заповнення прогрес-бару
+        document.querySelector('.progress-fill').style.width = '100%';
+
+        // Перенаправлення через 5 секунд
+        setTimeout(() => {
+            window.location.href = "{{ redirect_url }}";
+        }, 5000);
+    </script>
+</body>
+</html>

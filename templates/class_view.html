@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(45deg, #ff7e5f, #feb47b, #6a11cb, #2575fc);
+        background-size: 400% 400%;
+        animation: gradient 10s ease infinite;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .dashboard-title {
+        background-color: white;
+        color: black;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        background-color: #ff7e5f;
+        border-color: #ff7e5f;
+        color: white;
+        border-radius: 25px;
+        padding: 12px 25px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        transition: background-color 0.3s, transform 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #feb47b;
+        border-color: #feb47b;
+        transform: scale(1.05);
+    }
+
+    .list-group-item {
+        background-color: #fff;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        padding: 15px;
+        transition: transform 0.3s, box-shadow 0.3s ease;
+    }
+
+    .list-group-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="dashboard-title">Дашборд Учня</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-muted">Ваші предмети:</h2>
+            {% if subjects %}
+                <div class="list-group">
+                    {% for subject in subjects %}
+                        <a href="{% url 'subject_view' subject_id=subject.id %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ subject.name }}</h5>
+                                <small class="text-muted">ID: {{ subject.id }}</small>
+                            </div>
+                            <p class="mb-1">Перейдіть до перегляду оцінок і деталей.</p>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning mt-3" role="alert">
+                    У вас ще немає предметів для перегляду.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <a href="{% url 'chat_room' %}" class="btn btn-primary mb-3">Чат</a>
+            <a href="{% url 'home' %}" class="btn btn-primary">На головну</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
