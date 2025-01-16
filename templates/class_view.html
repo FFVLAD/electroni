@@ -70,7 +70,8 @@
             {% if subjects %}
                 <div class="list-group">
                     {% for subject in subjects %}
-                        <a href="{% url 'subject_view' subject_id=subject.id %}" class="list-group-item list-group-item-action">
+                        <!-- Посилання для перенаправлення -->
+                        <a href="{% url 'grade_detail' %}" class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ subject.name }}</h5>
                                 <small class="text-muted">ID: {{ subject.id }}</small>
@@ -95,3 +96,4 @@
     </div>
 </div>
 {% endblock %}
+

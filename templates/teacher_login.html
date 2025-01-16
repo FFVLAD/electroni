@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Увійти як вчитель</h1>
+    <form method="post" action="{% url 'teacher_login' %}" class="mt-4">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Логін:</label>
+            <input type="text" id="username" name="username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Увійти</button>
+    </form>
+</div>
+{% endblock %}

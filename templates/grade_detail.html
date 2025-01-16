@@ -1,12 +1,85 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Details</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-{% block content %}
-<div class="container">
-    <h2>Деталі оцінки</h2>
-    <p><strong>Учень:</strong> {{ grade.student.first_name }} {{ grade.student.last_name }}</p>
-    <p><strong>Вчитель:</strong> {{ grade.teacher.user.first_name }} {{ grade.teacher.user.last_name }}</p>
-    <p><strong>Предмет:</strong> {{ grade.subject.name }}</p>
-    <p><strong>Оцінка:</strong> {{ grade.grade }}</p>
-    <p><strong>Час:</strong> {{ grade.timestamp }}</p>
-</div>
-{% endblock %}
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: rgba(0, 0, 0, 0.2);
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #ff5722;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #e64a19;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Оцінки по Уроках <span id="subject-name"></span></h1>
+        <ul id="grades-list"></ul>
+        <a href="dashboard.html" class="back-btn">Назад</a>
+    </div>
+
+    <script>
+        // Отримуємо назву предмету з URL параметрів
+        const params = new URLSearchParams(window.location.search);
+        const subject = params.get('subject') || 'Предмет';
+        document.getElementById('subject-name').textContent = subject;
+
+        // Генеруємо рандомні оцінки
+        const gradesList = document.getElementById('grades-list');
+        for (let i = 1; i <= 10; i++) {
+            const grade = Math.floor(Math.random() * 12) + 1; // Рандом від 1 до 12
+            const listItem = document.createElement('li');
+            listItem.textContent = `Урок ${i}: ${grade}`;
+            gradesList.appendChild(listItem);
+        }
+    </script>
+</body>
+</html>

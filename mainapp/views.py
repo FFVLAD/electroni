@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import Student, Subject
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from .models import *
 
 
 from django.shortcuts import render, redirect
@@ -14,28 +15,35 @@ def home(request):
 
 from django.contrib.auth import authenticate, login
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
 
 def user_login(request):
     if request.method == 'POST':
+        # Отримуємо логін та пароль з форми
         username = request.POST.get('username')
         password = request.POST.get('password')
+
+        # Спробуємо автентифікацію користувача
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            # Визначити URL залежно від ролі
-            if user.role == 'teacher':
-                redirect_url = '/teacher_dashboard/'  # Сторінка для вчителів
-            elif user.role == 'student':
-                redirect_url = '/student_start/'  # Сторінка для студентів
-            else:
-                redirect_url = '/'  # У випадку невідомої ролі
+            login(request, user)  # Логін користувача в систему
 
-            # Показати сторінку завантаження
-            return render(request, 'loading.html', {'redirect_url': redirect_url})
-        else:
-            return HttpResponse("Невірний логін або пароль")
+            # Перевіряємо роль користувача
+            if user.is_teacher:
+                # Якщо це вчитель, перенаправляємо на сторінку викладача
+                return redirect('teacher_dashboard')
+            elif user.is_student:
+                # Якщо це студент, перенаправляємо на сторінку студента
+                return redirect('student_start')
+
+        # У разі невдалого входу (логін/пароль неправильні) перенаправляємо на student_start
+        return redirect('student_start')
+
+    # Якщо запит не POST (наприклад, при відкритті форми)
     return render(request, 'login.html')
+
 
 
 def user_logout(request):
@@ -47,27 +55,30 @@ from .models import Student, Class
 from django.shortcuts import render, redirect
 from .models import Student, Class
 
+from django.shortcuts import render
+from .models import Teacher, Class
+
+
 def teacher_dashboard(request):
+    # Отримання фіктивних класів і студентів для демонстрації
+    classrooms = [
+        {'name': '10-А', 'subject': 'Математика'},
+        {'name': '11-Б', 'subject': 'Фізика'}
+    ]
+    students = [
+        {'name': 'Іван Іваненко', 'classroom': '10-А'},
+        {'name': 'Марія Петренко', 'classroom': '11-Б'}
+    ]
+
+    # Повертаємо сторінку для викладача
+    return render(request, 'teacher_dashboard.html', {'classrooms': classrooms, 'students': students})
+
+
+def class_view(request):
     if request.user.role == 'teacher':
-
-        classrooms = Class.objects.filter(teacher=request.user)
-
-
-        students = Student.objects.filter(classroom__teacher=request.user)
-
-        for student in students:
-            student.grades_list = student.grades.all()
-        return render(request, 'teacher_dashboard.html', {'classrooms': classrooms, 'students': students})
+        students = Student.objects.all()  # Отримуємо всіх студентів
+        return render(request, 'class_view.html', {'students': students})
     return redirect('home')
-
-
-@login_required
-def class_view(request, grade):
-    if request.user.role == 'teacher':
-        students = Student.objects.filter(grade=grade)
-        return render(request, 'class_view.html', {'students': students, 'grade': grade})
-    return redirect('home')
-
 
 @login_required
 def student_detail(request, student_id):
@@ -143,20 +154,29 @@ from .models import Student
 
 
 from django.shortcuts import render, get_object_or_404
-from .models import Class, Student, Notas, Subject
+from django.shortcuts import render
+from django.shortcuts import render
 
-def teacher_class_view(request, class_id):
-    classroom = get_object_or_404(Class, id=class_id)
-    students = Student.objects.filter(classroom=classroom)
+def teacher_class_view(request):
+    # Статичні дані про клас
+    classroom = {'id': 1, 'name': '10A'}  # Ви можете змінити ці дані на потрібні
+    students = [
+        {'name': 'Іван Іванов', 'age': 16, 'grade': 'A'},
+        {'name': 'Марія Петрова', 'age': 17, 'grade': 'B'},
+        {'name': 'Олексій Сидоров', 'age': 16, 'grade': 'A'}
+    ]
 
     return render(request, 'teacher_class_view.html', {'classroom': classroom, 'students': students})
 
 
 def students_list_view(request):
-    # Отримуємо всіх учнів з бази даних
-    students = Student.objects.all()
+    # Статичні дані про учнів
+    students = [
+        {'name': 'Іван Іванов', 'age': 16, 'grade': 'A'},
+        {'name': 'Марія Петрова', 'age': 17, 'grade': 'B'},
+        {'name': 'Олексій Сидоров', 'age': 16, 'grade': 'A'}
+    ]
 
-    # Передаємо список учнів у шаблон
     return render(request, 'students_list.html', {'students': students})
 
 
@@ -167,15 +187,25 @@ from .forms import NotaForm
 
 
 
-@login_required
-def class_view(request, grade):
-    if request.user.role == 'teacher':
+from django.shortcuts import render, redirect
 
-        students = Student.objects.filter(grade=grade)
-        return render(request, 'class_view.html', {'students': students, 'grade': grade})
-    return redirect('home')
+def class_view(request):
+    # Статичний список предметів
+    subjects = [
+        {'id': 1, 'name': 'Математика'},
+        {'id': 2, 'name': 'Фізика'},
+        {'id': 3, 'name': 'Історія'},
+    ]
 
+    # Перевірка, чи був натиск на предмет
+    if request.method == 'POST':
+        return redirect('grade_detail')
 
+    # Відображаємо список предметів
+    context = {
+        'subjects': subjects
+    }
+    return render(request, 'class_view.html', context)
 
 @login_required
 def student_detail(request, student_id):
@@ -220,25 +250,49 @@ from django.http import HttpResponse
 from .models import Student, Subject, Notas
 
 
-def set_grade(request, student_id):
-    if not hasattr(request.user, 'teacher'):
-        return HttpResponse("У вас немає доступу до цієї функції.", status=403)
+def set_grade(request):
+    # Статичні дані про студентів, предмети та оцінки
+    students = {
+        1: {'name': 'Іван Іванов', 'class': '10A'},
+        2: {'name': 'Марія Петрова', 'class': '10A'},
+        3: {'name': 'Олексій Сидоров', 'class': '10B'},
+    }
 
-    teacher_profile = request.user.teacherprofile
-    student = get_object_or_404(Student, id=student_id)
+    subjects = {
+        1: {'name': 'Математика'},
+        2: {'name': 'Фізика'},
+        3: {'name': 'Хімія'},
+    }
+
+    teacher_subjects = [{'id': 1, 'name': 'Математика'}, {'id': 2, 'name': 'Фізика'}]
+
+    # Статичні дані для оцінок (зазначаємо учнів, їх предмети і оцінки)
+    grades = {
+        1: {'student': students[1], 'subject': subjects[1], 'grade': 'A'},
+        2: {'student': students[2], 'subject': subjects[2], 'grade': 'B'},
+    }
 
     if request.method == 'POST':
-        subject_id = request.POST.get('subject')
+        # Отримуємо значення з форми
+        student_id = int(request.POST.get('student'))
+        subject_id = int(request.POST.get('subject'))
         grade_value = request.POST.get('grade')
 
-        subject = get_object_or_404(teacher_profile.subjects, id=subject_id)
-        grade = Notas.objects.create(student=student, subject=subject, value=grade_value, teacher=request.user)
-        return HttpResponse("Оцінку виставлено успішно!")
+        # Перевірка чи існує студент з таким id
+        student = students.get(student_id)
+        if not student:
+            return HttpResponse("Студента не знайдено.", status=404)
 
+        # Перевірка чи існує предмет
+        subject = next((subj for subj in teacher_subjects if subj['id'] == subject_id), None)
+        if not subject:
+            return HttpResponse("Предмет не знайдений для цього вчителя.", status=404)
 
+        # Створення оцінки для студенту (використовуємо статичні дані)
+        grades[student_id] = {'student': student, 'subject': subject, 'grade': grade_value}
+        return HttpResponse(f"Оцінку {grade_value} виставлено студенту {student['name']} з предмету {subject['name']}.")
 
-
-
+    return HttpResponse("Метод не підтримується.", status=405)
 @login_required
 def teacher_start(request):
     if request.user.role == 'teacher':
@@ -247,15 +301,13 @@ def teacher_start(request):
 
 
 def student_start(request):
-    if request.user.is_authenticated and request.user.is_student:
-        return render(request, 'student_start.html')  # Головна сторінка студента
-    else:
-        return render(request, 'error.html', {'message': 'Доступ заборонено!'})
+    # Просто показуємо сторінку студенту без перевірки ролі
+    return render(request, 'student_start.html')
 
-def grade_detail(request, grade_id):
-    grade = get_object_or_404(Notas, id=grade_id)
-    return render(request, 'grade_detail.html', {'grade': grade})
 
+def grade_detail(request):
+    # Просто повертаємо статичний шаблон
+    return render(request, 'grade_detail.html')
 
 def chat_home(request):
     if request.user.is_teacher:
@@ -278,61 +330,41 @@ def chat_with_user(request, user_id):
     return render(request, 'chat_room.html', {'messages': messages, 'recipient': recipient})
 
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
-@receiver(post_save, sender=User)
-def create_teacher_profile(sender, instance, created, **kwargs):
-    if created:
-        TeacherProfile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_teacher_profile(sender, instance, **kwargs):
-    if hasattr(instance, 'teacherprofile'):
-        instance.teacherprofile.save()
 
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.contrib.auth import get_user_model
-from .models import StudentProfile  # Замініть на ваш шлях до моделі
+def register(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        role = request.POST.get('role')  # Отримуємо роль (teacher/student) з форми
 
-CustomUser = get_user_model()
+        # Створюємо користувача з хешованим паролем
+        user = CustomUser(
+            username=username,
+            role=role,
+            password=make_password(password)  # Хешуємо пароль перед збереженням
+        )
+        user.save()
 
-@receiver(post_save, sender=CustomUser)
-def create_student_profile(sender, instance, created, **kwargs):
-    if created:
-        # Перевірте, чи користувач має роль студента (якщо це необхідно)
-        if instance.role == 'student':
-            StudentProfile.objects.create(user=instance)
+        return redirect('login')  # Перенаправляємо на сторінку входу після реєстрації
 
-@receiver(post_save, sender=CustomUser)
-def save_student_profile(sender, instance, **kwargs):
-    if hasattr(instance, 'student_profile'):
-        instance.student_profile.save()
-
+    return render(request, 'register.html')
 
 
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
-def custom_login(request):
+def teacher_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-        # Аутентифікація користувача
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)  # Логін користувача
-            if user.is_teacher:
-                return redirect('teacher_start')  # Якщо це вчитель
-            elif user.is_student:
-                return redirect('student_start')  # Якщо це студент
+        # Перевірка на задані логін і пароль
+        if username == '12082010' and password == '26271262':
+            return redirect('teacher_dashboard')  # Перенаправлення на панель вчителя
         else:
-            messages.error(request, 'Неправильний логін або пароль!')
-            return redirect('student_start')  # Якщо логін або пароль неправильні
+            messages.error(request, 'Невірний логін або пароль. Спробуйте ще раз.')
+            return redirect('home')  # Повернення на головну
 
-    return render(request, 'login.html')  # Форма логіну
+    return render(request, 'teacher_login.html')
+

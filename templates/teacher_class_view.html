@@ -106,7 +106,7 @@
                             <td>{{ student.first_name }}</td>
                             <td>{{ student.last_name }}</td>
                             <td>
-                                <form method="POST" action="{% url 'set_grade' student.id %}">
+                                <form method="POST" action="{% url 'set_grade' %}">
                                     {% csrf_token %}
                                     <select name="subject" class="form-control">
                                         {% for subject in classroom.teacher.subjects.all %}

@@ -40,28 +40,36 @@ urlpatterns = [
     # Головна сторінка
     path('', views.home, name='home'),  # Домашня сторінка
 
+    path('register/', views.register, name='register'),
+    path('grade_detail/', views.grade_detail, name='grade_detail'),
+
+    path('teacher_login/', views.teacher_login, name='teacher_login'),  # Вхід для вчителя
+
+
+
+
     # Сторінки для старту
     path('teacher_start/', views.teacher_start, name='teacher_start'),  # Для вчителів
     path('student_start/', views.student_start, name='student_start'),  # Для студентів
     path('teacher_dashboard/', views.teacher_dashboard, name='teacher_dashboard'),  # Панель вчителя
 
     # Клас з оцінками
-    path('class_view/<int:grade>/', views.class_view, name='class_view'),  # Оцінки за класом
+    path('class_view/', views.class_view, name='class_view'),
 
     # Аутентифікація
     path('login/', views.user_login, name='login'),  # Вхід до системи
     path('logout/', views.user_logout, name='logout'),  # Вихід із системи
 
     # Клас для вчителів
-    path('teacher_class_view/<int:class_id>/', views.teacher_class_view, name='teacher_class_view'),  # Перегляд класу
+    path('teacher_class_view/', views.teacher_class_view, name='teacher_class_view'),  # Перегляд класу
 
     # Оцінки
-    path('set_grade/<int:student_id>/', views.set_grade, name='set_grade'),  # Встановлення оцінки
-    path('grade_detail/<int:grade_id>/', views.grade_detail, name='grade_detail'),  # Деталі оцінки
+    path('set_grade/', views.set_grade, name='set_grade'),  # Встановлення оцінки
+    path('grade_detail/', views.grade_detail, name='grade_detail'),  # Деталі оцінки
 
     # Чат
     path('chat/', views.chat_home, name='chat_room'),  # Головна сторінка чату
-    path('chat/<int:user_id>/', views.chat_with_user, name='chat_with_user'),  # Чат із користувачем
+    path('chatt/', views.chat_with_user, name='chat_with_user'),  # Чат із користувачем
 
     # Адмін-панель
     path('admin/', admin.site.urls),  # Адмін-панель

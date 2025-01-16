@@ -59,7 +59,6 @@
         border-radius: 8px;
     }
 </style>
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-12">
@@ -87,7 +86,7 @@
                             <td>{{ forloop.counter }}</td>
                             <td>{{ classroom.name }}</td>
                             <td>
-                                <a href="{% url 'teacher_class_view' class_id=classroom.id %}" class="btn btn-info">Переглянути</a>
+                                <a href="{% url 'set_grade' %}" class="btn btn-info">Переглянути</a>
                             </td>
                         </tr>
                     {% empty %}
@@ -116,12 +115,12 @@
                     {% for student in students %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ student.first_name }}</td>
-                            <td>{{ student.last_name }}</td>
+                            <td>{{ student.user.first_name }}</td>
+                            <td>{{ student.user.last_name }}</td>
                             <td>
                                 <ul>
-                                    {% for grade in student.grades_list.all %}
-                                        <li>{{ grade.value }}</li>
+                                    {% for grade in student.grades.all %}
+                                        <li>{{ grade.subject.name }}: {{ grade.grade }}</li>
                                     {% empty %}
                                         <li>Оцінок немає</li>
                                     {% endfor %}
